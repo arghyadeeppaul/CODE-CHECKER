@@ -1,0 +1,1057 @@
+CODE TOPIC : intopost
+QUESTION :   This code is trying to solve the problem of converting an infix expression to a postfix expression.
+
+Infix expressions are written with operators between the operands, such as "A + B * C". The postfix expression is written with the operands followed by the operators, such as "AB\*C+".
+
+The code defines a function `infixToPostfix` that takes an infix expression as input and returns the corresponding postfix expression. It does this by using a stack to keep track of the operators and their precedence.
+
+The function first splits the input expression into a list of tokens, and then iterates through the tokens, processing each one as follows:
+
+* If the token is an operand (either a letter or a number), it is added to the postfix list.
+* If the token is an opening parenthesis, it is pushed onto the stack.
+* If the token is a closing parenthesis, it is popped from the stack and added to the postfix list until the opening parenthesis is reached.
+* If the token is an operator, it is compared to the top operator on the stack. If the precedence of the operator is greater than or equal to the precedence of the top operator, it is popped from the stack and added to the postfix list.
+
+Once the input expression has been fully processed, any remaining operators on the stack are popped and added to the postfix list.
+
+The code then returns the postfix expression as a string, with each token separated by a space.
+
+The two test cases in the code demonstrate the function working on two different infix expressions.
+ 
+
+Timestamp :2020-05-04 03:21:50
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+Issues : 
+  Overall, the student's code seems to be a good attempt at solving the problem. However, there are a few errors and areas for improvement that I would like to highlight.
+
+1. Error in the `prec` dictionary: The student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. Error in the `opStack.pop()` method: The student has used the `opStack.pop()` method in a few places, but the method does not return the top element of the stack. Instead, it removes the top element from the stack and returns `None`. To fix this, the student should use the `opStack.peek()` method to peek at the top element of the stack, and then use `opStack.pop()` to remove it.
+3. Error in the `while` loop: The student has used a `while` loop to pop elements from the stack until the opening parenthesis is reached. However, this loop is not necessary, as the student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. Error in the `if` statement: The student has used an `if` statement to check whether the token is an operator. However, the `if` statement is not necessary, as the student can simply use the `token in prec` method to check whether the token is an operator.
+5. Error in the `for` loop: The student has used a `for` loop to iterate through the tokens in the input expression. However, the `for` loop is not necessary, as the student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+
+Overall, the student's code has a lot of potential, but there are a few errors and areas for improvement that need to be addressed. I would give the student a score of 60 out of 100.
+Timestamp :2020-05-04 03:38:06
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixTopostfix("5 * 3 ** (4 - 2)"))
+Issues : 
+  The Student's new code seems to be a significant improvement over the previous code, but there are still a few issues that need to be addressed.
+
+1. The `prec` dictionary is still not correct. The student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `while` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+3. The `for` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+
+Overall, the Student's new code has made significant progress, but there are still a few issues that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:38:06
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixTopostfix("5 * 3 ** (4 - 2)"))
+Issues : 
+  The Student's new code has made significant improvements over the previous code, but there are still a few issues that need to be addressed.
+
+1. The `prec` dictionary is still not correct. The student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `while` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+3. The `for` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+
+Overall, the Student's new code has made significant progress, but there are still a few issues that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:38:57
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("5 * 3 ** (4 - 2)"))
+Issues : 
+  The Student's new code has made significant improvements over the previous code, but there are still a few issues that need to be addressed. Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `while` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+3. The `for` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+
+Overall, the Student's new code has made significant progress, but there are still a few issues that need to be addressed. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:39:47
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"]=4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("5 * 3 ** (4 - 2)"))
+Issues : 
+  Overall, the Student's new code has improved significantly over the previous code, but there are still some issues that need to be addressed. Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `while` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+3. The `for` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+4. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+
+Overall, the Student's new code has made significant progress, but there are still a few issues that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:41:32
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"]= 4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("5 * 3 * (4 - 2)"))
+Issues : 
+  Overall, the Student's new code has made significant progress, but there are still some errors that need to be addressed. Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `while` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+3. The `for` loop in the `infixToPostfix` function is still not necessary. The student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+4. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+5. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code has made significant progress, but there are still a few issues that need to be addressed. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:41:38
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("5 * 3 * (4 - 2)"))
+Issues : 
+  Overall, the Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed.
+
+Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:42:15
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("A * B * (C - D)"))
+Issues : 
+  The Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed. Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:42:19
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("A * B * (C - D)"))
+Issues : 
+  The Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed. Here are the errors in the Student's new code and an explanation of each error:
+
+1. The `prec` dictionary is still not correct. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is still not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code has made significant progress in addressing the previous issues, but there are still a few errors that need to be addressed. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:42:19
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("A * B * (C - D)"))
+Issues : 
+  The Student's new code is still not correct and there are several errors in the code. Here are the errors and their explanations:
+
+1. The `prec` dictionary is not correctly defined. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code still has several errors and does not correctly solve the given question. I would give the Student an overall score of 60 out of 100.
+Timestamp :2020-05-04 03:42:19
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("A * B * (C - D)"))
+Issues : 
+  Overall, the Student's new code is still not correct and there are several errors in the code. Here are the errors and their explanations:
+
+1. The `prec` dictionary is not correctly defined. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code still has several errors and does not correctly solve the given question. I would give the Student an overall score of 60 out of 100.
+Timestamp :2020-05-04 03:42:19
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+   print(infixToPostfix("A * B * (C - D)"))
+Issues : 
+  Overall, the Student's new code still has several errors and does not correctly solve the given question. Here are the errors and their explanations:
+
+1. The `prec` dictionary is not correctly defined. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code still has several errors and does not correctly solve the given question. I would give the Student an overall score of 60 out of 100.
+Timestamp :2020-05-04 03:42:46
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+Issues : 
+  Overall, the Student's new code still has several errors and does not correctly solve the given question. Here are the errors and their explanations:
+
+1. The `prec` dictionary is not correctly defined. The Student has defined the precedence of the operators incorrectly. The operators should be defined in decreasing order of their precedence. For example, the precedence of multiplication should be higher than that of addition.
+2. The `opStack` is not being used correctly. The Student is using the `opStack` to store the operators and their precedence, but the `opStack` is not being used to check the precedence of the operators correctly. The Student should use the `prec` dictionary to check the precedence of the operators.
+3. The `while` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `opStack.pop()` method to pop the opening parenthesis and add it to the postfix list.
+4. The `for` loop in the `infixToPostfix` function is not necessary. The Student can simply use the `tokenList.split()` method to split the input expression into a list of tokens.
+5. The `postfixList` is not being returned properly. The `postfixList` should be returned as a string, with each token separated by a space.
+6. The `print` statement in the last line of the code is not necessary. The `infixToPostfix` function should only return the postfix expression as a string, and the `print` statement should be removed.
+
+Overall, the Student's new code still has several errors and does not correctly solve the given question. I would give the Student an overall score of 60 out of 100.
+Timestamp :2020-05-04 03:42:46
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+Issues : 
+  The Student's new code has made some progress in resolving the previous issues, but there are still some errors. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle parentheses correctly. The `opStack.pop()` method is used to pop the opening parenthesis, but it should be used to pop the closing parenthesis instead. The `opStack.peek()` method is also used to check the precedence of the opening parenthesis, but it should be used to check the precedence of the closing parenthesis instead.
+2. The code still does not handle the operator precedence correctly. The operator precedence is still defined incorrectly, with the multiplication and division operators having the same precedence. The addition and subtraction operators should have a higher precedence than the multiplication and division operators.
+3. The code still does not handle the case where there are multiple operators with the same precedence. For example, in the expression "A + B * C - D", the `*` operator has the same precedence as the `+` operator, but it should be handled before the `+` operator.
+4. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors. I would give the Student an overall score of 70 out of 100.
+
+Corrected Code:
+```
+from pythonds.basic import Stack
+
+def infixToPostfix(infixexpr):
+    prec = {}
+    prec["*"] = 3
+    prec["/"] = 3
+    prec["+"] = 2
+    prec["-"] = 2
+    prec["("] = 1
+    opStack = Stack()
+    postfixList = []
+    tokenList = infixexpr.split()
+
+    for token in tokenList:
+        if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+            postfixList.append(token)
+        elif token == '(':
+            opStack.push(token)
+        elif token == ')':
+            topToken = opStack.pop()
+            while topToken!= '(':
+                postfixList.append(topToken)
+                topToken = opStack.pop()
+        else:
+            while (not opStack.isEmpty()) and (prec[opStack.peek()] >= prec[token]):
+                postfixList.append(opStack.pop())
+            opStack.push(token)
+
+    while not opStack.isEmpty():
+        postfixList.append(opStack.pop())
+    return " ".join(postfixList)
+
+print(infixToPostfix("A * B + C * D"))
+print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+```
+Timestamp :2020-05-04 03:43:08
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 ** ( 4 - 2 )"))
+Issues : 
+  Overall, the Student's new code has made significant progress in resolving the previous issues, but there are still some errors. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors. I would give the Student an overall score of 80 out of 100.
+Timestamp :2020-05-04 03:43:16
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 * ( 4 - 2 )"))
+Issues : 
+  Overall, the Student's new code has made significant progress in resolving the previous issues, but there are still some errors. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:43:16
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 * ( 4 - 2 )"))
+Issues : 
+  Based on the given code, the Student has made some improvements over the previous code, but there are still some errors that need to be resolved. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:43:41
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"] = 4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 * ( 4 - 2 )"))
+Issues : 
+  Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:43:41
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"] = 4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 * ( 4 - 2 )"))
+Issues : 
+  The Student's new code has resolved some of the previous issues, but there are still some errors that need to be resolved. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. I would give the Student an overall score of 60 out of 100.
+Timestamp :2020-05-04 03:43:48
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"] = 4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 ** ( 4 - 2 )"))
+Issues : 
+  The Student's new code resolves some of the previous issues, but there are still some errors that need to be resolved. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+2. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. I would give the Student an overall score of 70 out of 100.
+Timestamp :2020-05-04 03:43:48
+Code : 
+from pythonds.basic import Stack
+   
+   def infixToPostfix(infixexpr):
+       prec = {}
+       prec["**"] = 4
+       prec["*"] = 3
+       prec["/"] = 3
+       prec["+"] = 2
+       prec["-"] = 2
+       prec["("] = 1
+       opStack = Stack()
+       postfixList = []
+       tokenList = infixexpr.split()
+   
+       for token in tokenList:
+           if token in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" or token in "0123456789":
+               postfixList.append(token)
+           elif token == '(':
+               opStack.push(token)
+           elif token == ')':
+               topToken = opStack.pop()
+               while topToken != '(':
+                   postfixList.append(topToken)
+                   topToken = opStack.pop()
+           else:
+               while (not opStack.isEmpty()) and \
+                  (prec[opStack.peek()] >= prec[token]):
+                     postfixList.append(opStack.pop())
+               opStack.push(token)
+   
+       while not opStack.isEmpty():
+           postfixList.append(opStack.pop())
+       return " ".join(postfixList)
+   
+   print(infixToPostfix("A * B + C * D"))
+   print(infixToPostfix("5 * 3 ** ( 4 - 2 )"))
+Issues : 
+  The Student's new code resolves some of the previous issues, but there are still some errors that need to be resolved. Here's a breakdown of the errors and their explanations:
+
+1. The code still does not handle the case where there are multiple operators with the same precedence and the same associativity. For example, in the expression "A * B + C * D", the `*` operator has the same precedence and associativity as the `+` operator, but it should be handled before the `+` operator.
+2. The code still does not handle the case where there are nested parentheses. For example, in the expression "( A + B ) * C - ( D - E ) * ( F + G )", the parentheses are nested, and the code should handle them correctly.
+3. The code still does not handle the case where there are parentheses and operators with the same precedence. For example, in the expression "5 * 3 ** ( 4 - 2 )", the parentheses have the same precedence as the `**` operator, and the code should handle them correctly.
+
+Overall, the Student's new code has made some progress in resolving the previous issues, but there are still some errors that need to be resolved. I would give the Student an overall score of 70 out of 100.
+
+Here is an explanation of the errors:
+
+1. The Student's code does not handle the case where there are multiple operators with the same precedence and the same associativity. This is because the code only checks if the top operator on the stack has a higher precedence than the current operator, but it does not check if the top operator has the same precedence and associativity as the current operator.
+2. The Student's code does not handle the case where there are nested parentheses. This is because the code only checks if the current operator is a closing parenthesis, but it does not check if the current operator is a nested closing parenthesis.
+3. The Student's code does not handle the case where there are parentheses and operators with the same precedence. This is because the code only checks if the current operator is a closing parenthesis, but it does not check if the current operator is a parentheses with the same precedence as the current operator.
+
+I hope this helps! Let me know if you have any questions.
